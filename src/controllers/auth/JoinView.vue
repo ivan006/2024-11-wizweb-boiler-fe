@@ -56,48 +56,8 @@
                 dense
                 class="q-mb-sm"
               />
-              <div
-                class="q-mb-sm"
-              >
-                <!--What type of group would you like?-->
-                Please make a group
-              </div>
 
 
-              <div>
-                <q-radio
-                  :rules="[val => !!val || 'Field is required']"
-                  v-model="intention"
-                  val="Customer"
-                  label="Family"
-                  color="primary"
-                  outlined
-                  dense
-                  class="q-mb-sm"
-                />
-              </div>
-              <div>
-
-                <q-radio
-                  :rules="[val => !!val || 'Field is required']"
-                  v-model="intention"
-                  val="Provider"
-                  label="School"
-                  color="primary"
-                  outlined
-                  dense
-                  class="q-mb-md"
-                />
-              </div>
-              <q-input
-                v-model="groupName"
-                type="text"
-                :label="intention === 'Customer' ? 'Family Name' : 'School Name'"
-                :rules="[val => !!val || 'Field is required']"
-                outlined
-                dense
-                class="q-mb-sm"
-              />
 
               <q-btn
                 block
@@ -132,19 +92,11 @@
 <script>
 import User from "src/models/User";
 import VueCookies from "vue-cookies";
-import Family from "src/models/orm-api/Family";
-import School from "src/models/orm-api/School";
 
 export default {
   name: "JoinView",
   data() {
     return {
-      groupName: '', // Default selection
-      intention: 'Customer', // Default selection
-      options: [
-        { label: 'Family', value: 'Customer' },
-        { label: 'School', value: 'Provider' }
-      ],
       entity: {},
       loading: false,
       checkEmail: false,
@@ -176,99 +128,24 @@ export default {
 
 
         const session = VueCookies.get('VITE_AUTH');
-        let groupRequest = null
-        if (this.intention === 'Customer') {
-          groupRequest = Family.Store(
-            {
-              name: this.groupName,
-              // creator_id: user.id,
-              // updater_id: user.id,
-            },
-            [],
-            {},
-            {}
-          )
-        } else {
-          groupRequest = School.Store(
-            {
-              name: this.groupName,
-              // creator_id: user.id,
-              // updater_id: user.id,
-            },
-            [],
-            {},
-            {}
-          )
-
-        }
 
 
-        groupRequest
-          .then((groupResponse) => {
 
-            const group = groupResponse.response.data.data
+        User.Register(this.entity)
+          .then((response) => {
 
-            if (this.intention === 'Customer') {
-              // console.log('family')
-              // console.log(family)
-              this.entity.primary_family_id = group.id
-            }
-            User.Register(this.entity)
-              .then((response) => {
+            const user = response.response.data.user
 
-                const user = response.response.data.user
-
-                let groupRequest = null
-                if (this.intention === 'Customer') {
-                  groupRequest = Family.Update(
-                    {
-                      id: group.id,
-                      creator_id: user.id,
-                      updater_id: user.id,
-                    },
-                    [],
-                    {},
-                    {}
-                  )
-                } else {
-                  groupRequest = School.Update(
-                    {
-                      id: group.id,
-                      creator_id: user.id,
-                      updater_id: user.id,
-                    },
-                    [],
-                    {},
-                    {}
-                  )
-
-                }
-
-                groupRequest
-                  .then((response) => {
-
-                    this.checkEmail = true
-                    this.loading = false
-                  })
-                  .catch((errors) => {
-                    if (errors.response && errors.response.data.errors) {
-                      this.setErrors(errors.response.data.errors);
-                    }
-
-                  });
-
-
-              })
-              .catch((errors) => {
-                if (errors.response && errors.response.data.errors) {
-                  this.setErrors(errors.response.data.errors);
-                }
-                this.loading = false
-              });
-          })
-          .catch(() => {
+            this.checkEmail = true
             this.loading = false
+
           })
+          .catch((errors) => {
+            if (errors.response && errors.response.data.errors) {
+              this.setErrors(errors.response.data.errors);
+            }
+            this.loading = false
+          });
       }
 
     },

@@ -1,13 +1,5 @@
 import MyBaseModel from 'src/models/helpers/MyBaseModel';
 import VueCookies from 'vue-cookies';
-import Attendance from 'src/models/orm-api/Attendance';
-import Child from 'src/models/orm-api/Child';
-import Event from 'src/models/orm-api/Event';
-import Family from 'src/models/orm-api/Family';
-import FamilyLink from 'src/models/orm-api/FamilyLink';
-import SchoolFamilyEnrollment from 'src/models/orm-api/SchoolFamilyEnrollment';
-import Job from 'src/models/orm-api/Job';
-import School from 'src/models/orm-api/School';
 
 export default class User extends MyBaseModel {
   static entity = 'user';
@@ -26,7 +18,6 @@ export default class User extends MyBaseModel {
   }
 
   static parentWithables = [
-    'primary_family'
   ];
 
   static rules = {
@@ -48,15 +39,6 @@ export default class User extends MyBaseModel {
     // 'password': {},
     // 'status': {},
     // 'remember_token': {},
-    'primary_family_id': {
-      linkablesRule(item){
-        const session = VueCookies.get('VITE_AUTH');
-        if (!session) return {id: 0}
-        return {
-          creator_id: session.user.id
-        }
-      },
-    },
 
         'created_at': {
           autoFill(item){
@@ -81,8 +63,6 @@ export default class User extends MyBaseModel {
       'id': this.attr('').nullable(),
       'old_id': this.attr('').nullable(),
       'name': this.attr(''),
-      'primary_family_id': this.attr('').nullable(),
-      'primary_family': this.belongsTo(Family, 'primary_family_id'),
       // 'email': this.attr('').nullable(),
       // 'email_verified_at': this.attr('').nullable(),
       // 'password': this.attr('').nullable(),
@@ -90,20 +70,6 @@ export default class User extends MyBaseModel {
       // 'remember_token': this.attr('').nullable(),
       'created_at': this.attr('').nullable(),
       'updated_at': this.attr('').nullable(),
-      'attendances': this.hasMany(Attendance, 'creator_id'),
-      'attendancesUpdaterId': this.hasMany(Attendance, 'updater_id'),
-      'children': this.hasMany(Child, 'creator_id'),
-      'childrenUpdaterId': this.hasMany(Child, 'updater_id'),
-      'events': this.hasMany(Event, 'creator_id'),
-      'eventsUpdaterId': this.hasMany(Event, 'updater_id'),
-      'families': this.hasMany(Family, 'creator_id'),
-      'familiesUpdaterId': this.hasMany(Family, 'updater_id'),
-      'FamilyLinks': this.hasMany(FamilyLink, 'user_id'),
-      'schoolFamilyEnrollments': this.hasMany(SchoolFamilyEnrollment, 'creator_id'),
-      'schoolFamilyEnrollmentsUpdaterId': this.hasMany(SchoolFamilyEnrollment, 'updater_id'),
-      'jobs': this.hasMany(Job, 'user_id'),
-      'schools': this.hasMany(School, 'creator_id'),
-      'schoolsUpdaterId': this.hasMany(School, 'updater_id')
     };
   }
 
