@@ -1,4 +1,4 @@
-import { DBBaseModel } from 'quicklists-vue-orm-ui'
+import { DBBaseModel } from 'wizweb-fe'
 import VueCookies from "vue-cookies";
 
 export default class DBEvent extends DBBaseModel {

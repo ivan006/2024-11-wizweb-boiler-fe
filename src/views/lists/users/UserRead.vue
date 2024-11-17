@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { SuperRecord } from 'quicklists-vue-orm-ui'
+import { SuperRecord } from 'wizweb-fe'
 import User from 'src/models/User'
 import {computed} from "vue";
 import VueCookies from "vue-cookies";

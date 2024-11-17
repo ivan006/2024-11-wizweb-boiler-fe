@@ -28,7 +28,8 @@
     "vue-cookies": "^1.8.4",
     "vue-router": "^4.0.12",
     "vue3-google-map": "^0.21.0",
-    "vuex": "^4.1.0"
+    "vuex": "^4.1.0",
+    "wizweb-fe": "^1.0.37"
   },
   "devDependencies": {
     "@babel/core": "^7.24.6",

@@ -1,7 +1,7 @@
 import { createStore } from 'vuex'
 import VuexORM from '@vuex-orm/core'
 
-import { DBCrudCacheSet } from 'quicklists-vue-orm-ui';
+import { DBCrudCacheSet } from 'wizweb-fe';
 
 import User from 'src/models/User'
 import Session from 'src/models/Session'
