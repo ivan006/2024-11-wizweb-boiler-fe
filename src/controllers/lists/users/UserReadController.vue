@@ -16,10 +16,12 @@
 
             <q-card class="" style="overflow: hidden;">
               <SectionComponent
-                label="Families"
+                label="Lorum Ipsum"
                 noBorder
               >
-                ...
+                <div class="q-ma-md">
+                  ...
+                </div>
               </SectionComponent>
             </q-card>
 
