@@ -34,48 +34,33 @@ export default configure(function () {
 
       extendViteConf(viteConf) {
 
-        viteConf.optimizeDeps = viteConf.optimizeDeps || {};
-        viteConf.optimizeDeps.include = viteConf.optimizeDeps.include || [];
-        viteConf.optimizeDeps.include.push("moment", "moment-timezone", "vue-cookies", "rgbcolor", "canvg");
-
-        viteConf.resolve = viteConf.resolve || {};
-        viteConf.resolve.alias = viteConf.resolve.alias || {};
-        viteConf.resolve.alias["moment"] = "moment/moment.js";
-        viteConf.resolve.alias["moment-timezone"] = "moment-timezone/builds/moment-timezone-with-data.js";
-
         viteConf.build = viteConf.build || {};
         viteConf.build.rollupOptions = viteConf.build.rollupOptions || {};
         viteConf.build.rollupOptions.output = {
-          entryFileNames: "js/[name].js",
-          chunkFileNames: "js/[name].js",
+          entryFileNames: 'js/[name].js',
+          chunkFileNames: 'js/[name].js',
           assetFileNames: (assetInfo) => {
-            if (assetInfo.name.endsWith(".css")) {
-              return "css/[name].css";
+            if (assetInfo.name.endsWith('.css')) {
+              return 'css/[name].css';
             }
-            return "assets/[name].[ext]";
+            return 'assets/[name].[ext]';
           },
           manualChunks(id) {
-            if (id.includes("node_modules")) {
-              return "vendor";
+            if (id.includes('node_modules')) {
+              return 'vendor';
             }
-          },
+          }
         };
 
-        viteConf.build.rollupOptions.external = viteConf.build.rollupOptions.external || [];
-        viteConf.build.rollupOptions.external.push("moment", "moment-timezone", "vue-cookies", "rgbcolor", "canvg");
-
         viteConf.build.commonjsOptions = viteConf.build.commonjsOptions || {};
-        viteConf.build.commonjsOptions.include = [/node_modules/];
+        viteConf.build.commonjsOptions.include = [/node_modules\/moment/];
 
         viteConf.server = {
           ...viteConf.server,
           fs: {
-            strict: false,
-          },
+            strict: false // Disable strict file serving restrictions
+          }
         };
-
-        viteConf.plugins = viteConf.plugins || [];
-        viteConf.plugins.push(commonjs());
 
       },
     },
