@@ -16,7 +16,7 @@
               <q-icon name="school" size="lg" style="opacity: 50%" />
             </q-avatar>
 
-            <q-toolbar-title>Home-Ed Community Hub</q-toolbar-title>
+            <q-toolbar-title>{{ siteTitle }}</q-toolbar-title>
             <q-btn
               flat
               dense
@@ -61,7 +61,7 @@
             <q-icon name="school" size="lg" style="opacity: 50%" />
           </q-avatar>
 
-          <q-toolbar-title>Home-Ed Community Hub</q-toolbar-title>
+          <q-toolbar-title>{{ siteTitle }}</q-toolbar-title>
 
           <!--<q-btn flat round dense icon="whatshot" />-->
           <slot name="menu"></slot>
@@ -143,7 +143,10 @@ const checkScreenWidth = () => {
   isSmallScreen.value = window.innerWidth <= 1151;
 };
 
+
+
 const leftDrawerOpen = ref(false);
+const siteTitle = ref('Lorum Ipsum');
 
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
