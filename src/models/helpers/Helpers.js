@@ -1,10 +1,11 @@
 import moment from "moment/moment";
 
 class Helpers {
+
   static formatCasualTime(start, end) {
-    const now = moment();
-    const startDate = moment(start);
-    const endDate = moment(end);
+    const now = dayjs();
+    const startDate = dayjs(start);
+    const endDate = dayjs(end);
 
     const startTime = startDate.format("HH:mm");
     const endTime = endDate.format("HH:mm");
@@ -19,7 +20,7 @@ class Helpers {
     const yearEnd = endDate.year();
 
     // Calculate duration in minutes, hours, days, and weeks, and round to the nearest half unit
-    const durationMinutes = endDate.diff(startDate, "minutes");
+    const durationMinutes = endDate.diff(startDate, "minute");
     const durationHours = durationMinutes / 60;
     const durationDays = durationHours / 24;
     const durationWeeks = durationDays / 7;
@@ -40,7 +41,7 @@ class Helpers {
     }
 
     // Determine if the event is within the next 6 days
-    const withinNextSixDays = startDate.isBefore(now.clone().add(6, "days"));
+    const withinNextSixDays = startDate.isBefore(now.add(6, "day"));
 
     // Format the time range
     let formattedRange = "";
@@ -59,8 +60,8 @@ class Helpers {
     }
 
     // Calculate "coming up" hint or event status
-    const timeUntilStart = startDate.diff(now, "minutes");
-    const timeUntilEnd = endDate.diff(now, "minutes");
+    const timeUntilStart = startDate.diff(now, "minute");
+    const timeUntilEnd = endDate.diff(now, "minute");
     let comingUpHint = "";
     if (timeUntilEnd < 0) {
       comingUpHint = "Event has finished";
@@ -70,15 +71,12 @@ class Helpers {
       const roundedMinutes = Math.round(timeUntilStart / 30) * 0.5;
       comingUpHint = `~${roundedMinutes} minute${roundedMinutes !== 1 ? "s" : ""} from now`;
     } else if (timeUntilStart < 1440) {
-      // Less than a day
       const roundedHours = Math.round((timeUntilStart / 60) * 2) / 2;
       comingUpHint = `~${roundedHours} hour${roundedHours !== 1 ? "s" : ""} from now`;
     } else if (timeUntilStart < 10080) {
-      // Less than a week
       const roundedDays = Math.round((timeUntilStart / 1440) * 2) / 2;
       comingUpHint = `~${roundedDays} day${roundedDays !== 1 ? "s" : ""} from now`;
     } else if (timeUntilStart < 43800) {
-      // Less than a month
       const roundedWeeks = Math.round((timeUntilStart / 10080) * 2) / 2;
       comingUpHint = `~${roundedWeeks} week${roundedWeeks !== 1 ? "s" : ""} from now`;
     } else {
