@@ -1,5 +1,4 @@
 import { configure } from "quasar/wrappers";
-import commonjs from "@rollup/plugin-commonjs";
 
 export default configure(function () {
   return {
@@ -29,39 +28,41 @@ export default configure(function () {
           },
           { server: false },
         ],
-        commonjs(), // Ensures CommonJS modules are properly transformed
       ],
 
       extendViteConf(viteConf) {
+        viteConf.optimizeDeps = viteConf.optimizeDeps || {};
+        viteConf.optimizeDeps.include = viteConf.optimizeDeps.include || [];
+        viteConf.optimizeDeps.include.push("dayjs"); // Add dayjs for pre-bundling
+
+        viteConf.resolve = viteConf.resolve || {};
+        viteConf.resolve.alias = viteConf.resolve.alias || {};
+        viteConf.resolve.alias["dayjs"] = "dayjs"; // Ensure it resolves to the correct package
 
         viteConf.build = viteConf.build || {};
         viteConf.build.rollupOptions = viteConf.build.rollupOptions || {};
         viteConf.build.rollupOptions.output = {
-          entryFileNames: 'js/[name].js',
-          chunkFileNames: 'js/[name].js',
+          entryFileNames: "js/[name].js",
+          chunkFileNames: "js/[name].js",
           assetFileNames: (assetInfo) => {
-            if (assetInfo.name.endsWith('.css')) {
-              return 'css/[name].css';
+            if (assetInfo.name.endsWith(".css")) {
+              return "css/[name].css";
             }
-            return 'assets/[name].[ext]';
+            return "assets/[name].[ext]";
           },
           manualChunks(id) {
-            if (id.includes('node_modules')) {
-              return 'vendor';
+            if (id.includes("node_modules")) {
+              return "vendor";
             }
-          }
+          },
         };
-
-        viteConf.build.commonjsOptions = viteConf.build.commonjsOptions || {};
-        viteConf.build.commonjsOptions.include = [/node_modules\/moment/];
 
         viteConf.server = {
           ...viteConf.server,
           fs: {
-            strict: false // Disable strict file serving restrictions
-          }
+            strict: false,
+          },
         };
-
       },
     },
 
