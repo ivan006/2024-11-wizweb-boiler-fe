@@ -29,19 +29,19 @@ export default configure(function () {
           },
           { server: false },
         ],
-        commonjs(),
+        commonjs(), // Ensures CommonJS modules are properly transformed
       ],
 
       extendViteConf(viteConf) {
+
         viteConf.optimizeDeps = viteConf.optimizeDeps || {};
         viteConf.optimizeDeps.include = viteConf.optimizeDeps.include || [];
-        viteConf.optimizeDeps.include.push("moment", "moment-timezone");
+        viteConf.optimizeDeps.include.push("moment", "moment-timezone", "vue-cookies", "rgbcolor", "canvg");
 
         viteConf.resolve = viteConf.resolve || {};
         viteConf.resolve.alias = viteConf.resolve.alias || {};
         viteConf.resolve.alias["moment"] = "moment/moment.js";
-        viteConf.resolve.alias["moment-timezone"] =
-          "moment-timezone/builds/moment-timezone-with-data.js";
+        viteConf.resolve.alias["moment-timezone"] = "moment-timezone/builds/moment-timezone-with-data.js";
 
         viteConf.build = viteConf.build || {};
         viteConf.build.rollupOptions = viteConf.build.rollupOptions || {};
@@ -61,12 +61,22 @@ export default configure(function () {
           },
         };
 
+        viteConf.build.rollupOptions.external = viteConf.build.rollupOptions.external || [];
+        viteConf.build.rollupOptions.external.push("moment", "moment-timezone", "vue-cookies", "rgbcolor", "canvg");
+
+        viteConf.build.commonjsOptions = viteConf.build.commonjsOptions || {};
+        viteConf.build.commonjsOptions.include = [/node_modules/];
+
         viteConf.server = {
           ...viteConf.server,
           fs: {
             strict: false,
           },
         };
+
+        viteConf.plugins = viteConf.plugins || [];
+        viteConf.plugins.push(commonjs());
+
       },
     },
 
