@@ -2,13 +2,13 @@ import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import duration from "dayjs/plugin/duration";
 import isBetween from "dayjs/plugin/isBetween";
-import isSame from "dayjs/plugin/isSame";
+// import isSame from "dayjs/plugin/isSame";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 
 dayjs.extend(localizedFormat);
 dayjs.extend(duration);
 dayjs.extend(isBetween);
-dayjs.extend(isSame);
+// dayjs.extend(isSame);
 dayjs.extend(advancedFormat);
 
 class Helpers {
